@@ -3,16 +3,12 @@
 /**
  * Lity
  * 
- * description
+ * Script to initialize project, create new controllers, new models, new plugins,
+ * new helpers and new services.
  *
  * @author Wibeset <support@wibeset.com>
  */
  
-if (count($argv) == 0) {
-    show_help();
-    exit;
-}
-
 /**
  * Show help
  *
@@ -20,5 +16,22 @@ if (count($argv) == 0) {
  */
 function show_help()
 {
-    //code
+   echo "Script to initialize project, create new controllers, new models, new plugins,".
+       " new helpers and new services.\n".
+       "\n".
+       "usage: php lity/Lity.php <command>\n".
+       "\n".
+       "  init       \t Initialize project\n".
+       "  controller \t Add a new controller\n".
+       "  environment\t Add a new environment config file\n".
+       "  helper     \t Add a new helper\n".
+       "  model      \t Add a new model\n".
+       "  plugin     \t Add a new plugin\n".
+       "  service    \t Add a new service\n";
+    
+} // show_help()
+
+if (count($argv) == 1) {
+    show_help();
+    exit;
 }
