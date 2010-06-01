@@ -8,6 +8,8 @@
  *
  * @author Wibeset <support@wibeset.com>
  */
+
+define('ABSPATH', dirname(__FILE__).'/../');
  
 /**
  * Show help
@@ -34,4 +36,20 @@ function show_help()
 if (count($argv) == 1) {
     show_help();
     exit;
+}
+
+// Execute command
+switch ($argv[1]) {
+  
+    // Initialize project
+    case 'init':
+        require_once ABSPATH.'lity/core/scripts/Project.php';
+        $project = new Lity_Core_Script_Project();
+        $project->run();
+        break;
+      
+    default:
+        show_help();
+        break;
+      
 }
