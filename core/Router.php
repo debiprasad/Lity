@@ -24,9 +24,9 @@ class Lity_Router
 	 * @var $_url_replacement
 	 */	
 	private $_url_replacement = array(
-																		0 => array("*"),
-																		1 => array("[a-zA-Z0-9_]+")
-																		);
+									0 => array("*"),
+									1 => array("[a-zA-Z0-9_]+")
+									);
 
 	/**
 	 * Constructor
@@ -75,7 +75,7 @@ class Lity_Router
 	 */
 	public function save_to_cache($version)
 	{
-		$route_file = ABSPATH.'tmp/routes.'.$version;
+		$route_file = ABSPATH.'cache/routes.'.$version;
 		
 		if (!@file_put_contents($route_file, serialize($this->_routes))) {
 			throw new Exception('Unable to open '.$route_file.' for writing');
