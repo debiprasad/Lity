@@ -14,20 +14,20 @@ class Lity_Helper_Validator
 	 * @var array default errors messages
 	 */
 	private $_default_error_messages = array(
-																					 'inclusion' => "is not included in the list",
-																					 'exclusion' => "is reserved",
-																					 'invalid' => "is invalid",
-																					 'confirmation' => "doesn't match confirmation",
-																					 #'accepted ' => "must be accepted",
-																					 'empty' => "can't be empty",
-																					 'too_long' => "is too long (max is %d characters)",
-																					 'too_short' => "is too short (min is %d characters)",
-																					 #'taken' => "has already been taken",
-																					 'not_a_number' => "is not a number",
-																					 'not_a_string' => "is not a string",
-																					 'not_a_email' => "is not a valid email address",
-																					 'not_between' => "is not in the interval"
-																					 );
+											 'inclusion' => "is not included in the list",
+											 'exclusion' => "is reserved",
+											 'invalid' => "is invalid",
+											 'confirmation' => "doesn't match confirmation",
+											 #'accepted ' => "must be accepted",
+											 'empty' => "can't be empty",
+											 'too_long' => "is too long (max is %d characters)",
+											 'too_short' => "is too short (min is %d characters)",
+											 #'taken' => "has already been taken",
+											 'not_a_number' => "is not a number",
+											 'not_a_string' => "is not a string",
+											 'not_a_email' => "is not a valid email address",
+											 'not_between' => "is not in the interval"
+											 );
 
 	/**
 	 * Validate a bunch of attributes
@@ -45,18 +45,18 @@ class Lity_Helper_Validator
 		// Apply each rules
 		foreach ($rules as $field_name => $field_rules) {
 			
-	    if (isset($attributes[$field_name])) {
+		if (isset($attributes[$field_name])) {
 				$field_value = $attributes[$field_name];
 
 				foreach ($field_rules as $condition => $rule) {
 					if (!$this->validate($condition, 
-															 $field_name, 
-															 $field_value, 
-															 $rule, 
-															 (!empty($field_rules['message']) ? $field_rules['message'] : "")))
+										 $field_name, 
+										 $field_value, 
+										 $rule, 
+										 (!empty($field_rules['message']) ? $field_rules['message'] : "")))
 						$is_valid = false;
 				}
-	    }
+		}
 			
 		}
 
@@ -83,49 +83,49 @@ class Lity_Helper_Validator
 		switch ($type) {
 			
 		 case 'present':
-	    $default_message = $this->_default_error_messages['empty'];
-	    $is_valid = $this->presence_of($value);
-	    break;
+		    $default_message = $this->_default_error_messages['empty'];
+		    $is_valid = $this->presence_of($value);
+		    break;
 			
 		 case 'minlen':
-	    $default_message = str_replace('%d', $rule, $this->_default_error_messages['too_short']);
-	    $is_valid = $this->minimal_length_of($value, $rule);
-	    break;
+		    $default_message = str_replace('%d', $rule, $this->_default_error_messages['too_short']);
+		    $is_valid = $this->minimal_length_of($value, $rule);
+		    break;
 			
 		 case 'maxlen':
-	    $default_message = str_replace('%d', $rule, $this->_default_error_messages['too_long']);
-	    $is_valid = $this->maximal_length_of($value, $rule);
-	    break;
+		    $default_message = str_replace('%d', $rule, $this->_default_error_messages['too_long']);
+		    $is_valid = $this->maximal_length_of($value, $rule);
+		    break;
 			
 		 case 'between':
-	    $default_message = $this->_default_error_messages['not_between'];
-	    $is_valid = $this->between_of($value, $rule);
-	    break;
+		    $default_message = $this->_default_error_messages['not_between'];
+		    $is_valid = $this->between_of($value, $rule);
+		    break;
 			
 		 case 'inclusion':
-	    $default_message = $this->_default_error_messages['inclusion'];
-	    $is_valid = $this->inclusion_of($value, $rule);
-	    break;
+		    $default_message = $this->_default_error_messages['inclusion'];
+		    $is_valid = $this->inclusion_of($value, $rule);
+		    break;
 			
 		 case 'exclusion':
-	    $default_message = $this->_default_error_messages['exclusion'];
-	    $is_valid = $this->exclusion_of($value, $rule);
-	    break;
+		    $default_message = $this->_default_error_messages['exclusion'];
+		    $is_valid = $this->exclusion_of($value, $rule);
+		    break;
 			
 		 case 'number':
-	    $default_message = $this->_default_error_messages['not_a_number'];
-	    $is_valid = $this->numericality_of($value);
-	    break;
+		    $default_message = $this->_default_error_messages['not_a_number'];
+		    $is_valid = $this->numericality_of($value);
+		    break;
 			
 		 case 'format':
-	    $default_message = $this->_default_error_messages['invalid'];
-	    $is_valid = $this->format_of($value, $rule);
-	    break;
+		    $default_message = $this->_default_error_messages['invalid'];
+		    $is_valid = $this->format_of($value, $rule);
+		    break;
 			
 		 case 'email':
-	    $default_message = $this->_default_error_messages['not_a_email'];
-	    $is_valid = $this->email_of($value);
-	    break;
+		    $default_message = $this->_default_error_messages['not_a_email'];
+		    $is_valid = $this->email_of($value);
+		    break;
 			
 		}
 
