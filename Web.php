@@ -92,28 +92,43 @@ class Lity_Web extends Lity_Application
 
 		// controller exists?
 		if (!file_exists(ABSPATH.'app/controllers/'.$map_to_dir.ucfirst($controller_name).'.php')) {
-			redirect_to_404();
+			if (!empty(app()->config['404'])) {
+			    $this->route['map_to'] = $map_to_dir = '';
+			    $this->route['controller'] = $controller_name = app()->config['404'];
+			    $this->route['action'] = $action_name = 'index';
+			} else {
+			    redirect('');
+			}
 		}
 
 		// log execution...
-		if (isset(app()->config['logger']) && isset(app()->config['logger']['core']) && app()->config['logger']['core'] == true)
+		if (isset(app()->config['logger']) && isset(app()->config['logger']['core']) 
+		    && app()->config['logger']['core'] == true) {
 		  logdata('Executing controler '.$map_to_dir.$controller_name.'/'.$action_name.' from request '.$this->route['request']);
+		}
 
 		//
-		require_once(ABSPATH.'app/controllers/'.$map_to_dir.ucfirst($controller_name).'.php' );
+		require_once ABSPATH.'app/controllers/'.$map_to_dir.ucfirst($controller_name).'.php';
 		$controller_class_name = 'Controller_'.($map_to != '' ? ucfirst($map_to).'_' : '').ucfirst($controller_name);
 		$this->controller = new $controller_class_name();
 		$this->controller->view = array();
 		
 		// action exists?
-		if (!method_exists($this->controller, $this->route['action']))
-			redirect_to_404();
+		if (!method_exists($this->controller, $action_name)) {
+		    if (!empty(app()->config['404'])) {
+		        $this->route['map_to'] = $map_to_dir = '';
+		        $this->route['controller'] = $controller_name = app()->config['404'];
+		        $this->route['action'] = $action_name = 'index';
+		    } else {
+		        redirect('');
+		    }
+		}
 
 		// initialize controller
 		$this->controller->initialize();
 
 		// are we caching?
-		$this->cache = isset($this->controller->actions_to_cache[$this->route['action']]) ? true : false;
+		$this->cache = isset($this->controller->actions_to_cache[$action_name]) ? true : false;
 
 		// file to cache
 		if ($this->cache) {
@@ -122,7 +137,7 @@ class Lity_Web extends Lity_Application
 			$this->file_to_cache = ABSPATH.'cache/actions/'.lang().'/'.$request.'.html';
 		}
 		// update cache?
-		$this->update_cache = $this->cache ? (@filemtime($this->file_to_cache) < time() - $this->controller->actions_to_cache[$this->route['action']]) : false;
+		$this->update_cache = $this->cache ? (@filemtime($this->file_to_cache) < time() - $this->controller->actions_to_cache[$action_name]) : false;
 
 		// execute action
 		if (!$this->cache || ($this->cache && $this->update_cache)) $this->controller->{$action_name}();
