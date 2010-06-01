@@ -1,0 +1,7 @@
+# Lity
+
+Lity is a PHP5 Model-View-Controller framework.
+
+## Installation
+
+Coming soon...
