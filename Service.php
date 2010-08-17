@@ -29,9 +29,9 @@ class Lity_Service extends Lity_Application
 	 *
 	 */
 	public function run()
-	{
+	{		
 	    // run application
-		parent::run();
+		parent::run();		
 		
 		// execute router to define route settings
 		$this->execute_router();
@@ -59,8 +59,10 @@ class Lity_Service extends Lity_Application
 		if (count($request) == 0) {
 			$request = $request[0];
 		} else {
-			if (strstr($request[1], '?')) $this->format = mb_substr($request[1], 0, mb_strpos($request[1], '?'));
-			else $this->_format = $request[1];
+			if (strstr($request[1], '?')) 
+			    $this->_format = mb_substr($request[1], 0, mb_strpos($request[1], '?'));
+			else 
+			    $this->_format = $request[1];
 			$request = $request[0];
 		}
 
@@ -71,7 +73,7 @@ class Lity_Service extends Lity_Application
 		if (defined('ENV') && ENV != '')
 			$this->parameters['lity']['env'] = ENV;
 		else
-			$this->parameters['lity']s['env'] = 'development';
+			$this->parameters['lity']['env'] = 'development';
 
 		// post parameters?
 		if (!empty($_POST))
@@ -101,13 +103,15 @@ class Lity_Service extends Lity_Application
 		}
 
 		// log execution...
-		if (isset(app()->config['logger']) && isset(app()->config['logger']['core']) && app()->config['logger']['core'] == true)
-			logdata('Executing controler '.$map_to.$controller_name.'/'.$action_name.' from request '.$this->route['request']);		
+		if (isset(app()->config['logger']) && isset(app()->config['logger']['core']) 
+		    && app()->config['logger']['core'] == true)
+			logdata('Executing controler '.$map_to.$controller_name.'/'.$action_name.' from request '.
+			        $this->route['request']);		
 
 		//
-		require_once(ABSPATH.'app/controllers/'.$map_to.ucfirst($controller_name).'.php' );
+		require_once ABSPATH.'app/controllers/'.$map_to.ucfirst($controller_name).'.php';		
 		$controller_class_name = 'Controller_'.ucfirst($controller_name);
-		$this->controller = new $controller_class_name();
+		$this->controller = new $controller_class_name();		
 
 		// initialize controller
 		$this->controller->initialize();
