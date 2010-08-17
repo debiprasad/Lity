@@ -16,9 +16,13 @@ class Lity_Db_Mysql extends Lity_Db
 	 * Connect to database
 	 * 
 	 */
-	public function connect()
-	{
-		$this->_db_link = mysql_connect($this->_host,	$this->_user,	$this->_password);
+	public function connect() {
+		
+		$this->_db_link = mysql_connect(
+																		$this->_host,
+																		$this->_user,
+																		$this->_password
+																		);
 		
 		$this->_is_connected = true;
 		
@@ -151,6 +155,19 @@ class Lity_Db_Mysql extends Lity_Db
 		return ((int)$last_id > 0 ? $last_id : false);
 		
 	} // last_insert_id()
+	
+	/**
+	 * Escape string
+	 * 
+	 * @param string $string
+	 * @return string Escaped string
+	 * 
+	 */
+	public function escape($string)
+	{
+		return mysql_real_escape_string($string, $this->_db_link);
+		
+	} // escape()
 	
 	/**
 	 * Shutdown database connection
