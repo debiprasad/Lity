@@ -17,7 +17,7 @@ function app() {
 		return Lity_Web::get_instance();
 	else if (MODE == 'cron')
 		return Lity_Cron::get_instance();
-	else if (mode == 'service')
+	else if (MODE == 'service')
 		return Lity_Service::get_instance();
 	return null;
 } // app()
@@ -29,8 +29,11 @@ function app() {
  *
  */
 function read_config() {
-	foreach (func_get_args() as $config)
-		@require_once ABSPATH . 'app/config/' . $config . '.php';
+	foreach (func_get_args() as $config) {
+	    $config = explode('/', $config);	    
+	    $config[] = ucfirst(array_pop($config));	    
+		@require_once ABSPATH.'app/config/'.implode('/', $config).'.php';
+	}
 } // read_config()
 
 /**
