@@ -89,7 +89,7 @@ class Lity_View_Phtml
 		if ($this->_type == 'view') {
 			
 	    if (strpos($tpl, "/") && $this->_type != 'component') {
-				$this->_tpl = ABSPATH."app/views/".$tpl."php";
+				$this->_tpl = ABSPATH."app/views/".$tpl.".php";
 	    } else {
 				$map_to = (isset(app()->route['map_to']) ? app()->route['map_to'].'/' : '');
 				$controller = app()->route['controller'];
@@ -280,7 +280,7 @@ class Lity_View_Phtml
 	 */
 	public function render($values = null)
 	{
-		# basics attributes..
+		// basics attributes..
 		if ($values != null && is_array($values))
 			$this->set_all($values);
 		
