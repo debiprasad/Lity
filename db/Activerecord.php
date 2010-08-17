@@ -74,7 +74,7 @@ class Lity_Db_Activerecord
 	 * Initialize database
 	 * 
 	 */
-	private function initialize_db()
+	public function initialize_db()
 	{
 		$this->_db = db();
 		
@@ -194,7 +194,7 @@ class Lity_Db_Activerecord
 	 */
 	public function __set($name, $value)
 	{
-		if (isset($this->fields[$name]) || array_search($name, $this->accessors) !== false) {
+		if (isset($this->fields[$name]) || (!empty($this->accessors) && array_search($name, $this->accessors) !== false)) {
 						
 	    $settername = 'set_'.$name;
 	    if(method_exists($this, $settername))
