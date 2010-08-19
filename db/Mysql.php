@@ -16,8 +16,8 @@ class Lity_Db_Mysql extends Lity_Db
 	 * Connect to database
 	 * 
 	 */
-	public function connect() {
-		
+	public function connect()
+	{
 		$this->_db_link = mysql_connect(
 																		$this->_host,
 																		$this->_user,
