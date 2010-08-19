@@ -93,20 +93,21 @@ class Lity_Service extends Lity_Application
 	 */
 	protected function execute_controller()
 	{
-	    $map_to = ($map_to = $this->route['map_to']) ? $map_to.'/' : '';
+	    $map_to = (isset($this->route['map_to']) ? $this->route['map_to'].'/' : '');
 		$controller_name = $this->route['controller'];
 		$action_name = $this->route['action'];
 
 		// controller exists?
 		if (!file_exists(ABSPATH.'app/controllers/'.$map_to.ucfirst($controller_name).'.php')) {
 			redirect_to('');
-		}
+		}		
 
 		// log execution...
 		if (isset(app()->config['logger']) && isset(app()->config['logger']['core']) 
-		    && app()->config['logger']['core'] == true)
+		    && app()->config['logger']['core'] == true) {
 			logdata('Executing controler '.$map_to.$controller_name.'/'.$action_name.' from request '.
-			        $this->route['request']);		
+			        $this->route['request']);
+		}
 
 		//
 		require_once ABSPATH.'app/controllers/'.$map_to.ucfirst($controller_name).'.php';		
