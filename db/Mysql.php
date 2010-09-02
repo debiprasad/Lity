@@ -165,6 +165,10 @@ class Lity_Db_Mysql extends Lity_Db
 	 */
 	public function escape($string)
 	{
+		if ($this->_db_link == null) {
+			$this->connect();
+		}
+	
 		return mysql_real_escape_string($string, $this->_db_link);
 		
 	} // escape()
