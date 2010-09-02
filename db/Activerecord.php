@@ -61,7 +61,6 @@ class Lity_Db_Activerecord
 
 	/**
 	 * Initialize model
-	 * 
 	 */
 	public function initialize()
 	{
@@ -72,9 +71,8 @@ class Lity_Db_Activerecord
 
 	/**
 	 * Initialize database
-	 * 
 	 */
-	public function initialize_db()
+	private function initialize_db()
 	{
 		$this->_db = db();
 		
@@ -85,7 +83,6 @@ class Lity_Db_Activerecord
 
 	/**
 	 * Reinitialize/clean model
-	 * 
 	 */
 	public function clear()
 	{
@@ -109,7 +106,7 @@ class Lity_Db_Activerecord
 		if ($id !== null)
 			$this->$field = $id;
 		
-		return $this->attribute($field);
+		return $this->_attribute($field);
 		
 	} // id()
 
@@ -172,7 +169,7 @@ class Lity_Db_Activerecord
 	{
 		$gettername = 'get_'.$name;
 
-		$value = $this->attribute($name);
+		$value = $this->_attribute($name);
 
 		if (method_exists($this, $gettername))
 			return $this->$gettername($value);
@@ -194,7 +191,7 @@ class Lity_Db_Activerecord
 	 */
 	public function __set($name, $value)
 	{
-		if (isset($this->fields[$name]) || (!empty($this->accessors) && array_search($name, $this->accessors) !== false)) {
+		if (isset($this->fields[$name]) || array_search($name, $this->accessors) !== false) {
 						
 	    $settername = 'set_'.$name;
 	    if(method_exists($this, $settername))
@@ -225,7 +222,7 @@ class Lity_Db_Activerecord
 	 */
 	public function has_attribute($attribute)
 	{
-		if ($this->attribute($name) !== null)
+		if ($this->_attribute($name) !== null)
 			return true;
 		
 		return false;
@@ -238,7 +235,7 @@ class Lity_Db_Activerecord
 	 * @param  string $name field's name
 	 * @return string       field's value
 	 */
-	private function attribute($name)
+	private function _attribute($name)
 	{
 		if (isset($this->_attributes[$name]))
 			return $this->_attributes[$name];
@@ -255,7 +252,7 @@ class Lity_Db_Activerecord
 	 */
 	public function attributes($attributes = null)
 	{
-		if ($attributes) {			
+		if ($attributes) {
 	    foreach ($attributes as $attributek => $attributev)
 	      $this->$attributek = $attributev;
 		}
@@ -467,7 +464,7 @@ class Lity_Db_Activerecord
 	    // Stack fields & values
 	    foreach ($row as $rowk => $rowv) {
 				$fields[$rowk] = $rowk;
-				$rowvalues[] = "'".mysql_real_escape_string(trim($rowv))."'";
+				$rowvalues[] = "'".$this->_db->escape(trim($rowv))."'";
 	    }
 
 	    $values[] = implode(', ', $rowvalues);
@@ -497,6 +494,7 @@ class Lity_Db_Activerecord
 	public function update()
 	{
 		$this->updated_at = time();
+		
 		return $this->_execute_query('update');
 		
 	} // update()
@@ -659,7 +657,6 @@ class Lity_Db_Activerecord
 
 	/**
 	 * Validate attributes depending on definitionRules
-	 * 
 	 */
 	public function validate()
 	{
@@ -743,7 +740,6 @@ class Lity_Db_Activerecord
 	private function _build_query($type)
 	{
 		switch ($type) {
-			
 		 case 'find':
 		 case 'find_first':
 	    $query = 'select '.
@@ -886,7 +882,7 @@ class Lity_Db_Activerecord
 		 case 1:
 	    foreach ($this->attributes() as $attributek => $attributev) {
 				if (isset($this->fields[$attributek]))
-					$query .= "'".mysql_real_escape_string($attributev)."', ";
+					$query .= "'".$this->_db->escape($attributev)."', ";
 	    }
 	    $query = substr($query, 0, strlen($query)-2);
 	    break;
@@ -894,7 +890,7 @@ class Lity_Db_Activerecord
 		 case 2:
 	    foreach ($this->attributes() as $field => $value) {
 				if (isset($this->fields[$field])) {
-					$query .= $field."='".mysql_real_escape_string($value)."', ";
+					$query .= $field."='".$this->_db->escape($value)."', ";
 				}
 	    }
 	    $query = substr($query, 0, strlen($query)-2);
