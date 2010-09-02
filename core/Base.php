@@ -25,13 +25,12 @@ function app() {
 /**
  * Read configuration file(s)
  *
- * Example: read_config('file1', 'file2', 'fileN');
- *
+ * @deprecated use app()->read_config()
  */
 function read_config() {
 	foreach (func_get_args() as $config) {
-	    $config = explode('/', $config);	    
-	    $config[] = ucfirst(array_pop($config));	    
+		$config = explode('/', $config);	    
+		$config[] = ucfirst(array_pop($config));	    
 		@require_once ABSPATH.'app/config/'.implode('/', $config).'.php';
 	}
 } // read_config()
