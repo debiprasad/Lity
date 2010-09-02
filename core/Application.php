@@ -114,7 +114,7 @@ class Lity_Application
 			$filename = ucfirst(array_pop($config_name));
 			$config_name = implode('/', $config_name).'/'.$filename;
 
-			@require_once ABSPATH.'app/config/'.$config_name.'.php';
+			@require ABSPATH.'app/config/'.$config_name.'.php';
 
 			$this->config += $config;
 
