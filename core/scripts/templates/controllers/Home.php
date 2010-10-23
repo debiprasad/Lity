@@ -2,7 +2,6 @@
 
 /**
  * Home
- *
  * This is the homepage
  * 
  * @author your name <email>
@@ -15,10 +14,10 @@ class Controller_Home extends Controller_Application
     /**
      * Initialize controller
      *
-     * @return void
      */
     public function initialize()
     {
+        // Initialize application...
         parent::initialize();
         
     } // initialize()
