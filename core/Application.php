@@ -112,7 +112,7 @@ class Lity_Application
 
 			$config_name = explode('/', $config_name);
 			$filename = ucfirst(array_pop($config_name));
-			$config_name = implode('/', $config_name).'/'.$filename;
+			$config_name = str_replace('//', '/', implode('/', $config_name).'/'.$filename);
 
 			@require ABSPATH.'app/config/'.$config_name.'.php';
 
