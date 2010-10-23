@@ -12,35 +12,42 @@
  * Get application instance
  *
  */
-function app() {
+function app()
+{
 	if (MODE == 'web')
 		return Lity_Web::get_instance();
 	else if (MODE == 'cron')
 		return Lity_Cron::get_instance();
 	else if (MODE == 'service')
 		return Lity_Service::get_instance();
+		
 	return null;
+	
 } // app()
 
 /**
  * Read configuration file(s)
  *
- * @deprecated use app()->read_config()
+ * Example: read_config('file1', 'file2', 'fileN');
  */
-function read_config() {
+function read_config()
+{
 	foreach (func_get_args() as $config) {
-		$config = explode('/', $config);	    
-		$config[] = ucfirst(array_pop($config));	    
+	    $config = explode('/', $config);	    
+	    $config[] = ucfirst(array_pop($config));	    
 		@require_once ABSPATH.'app/config/'.implode('/', $config).'.php';
 	}
+	
 } // read_config()
 
 /**
  * Get current environment
  *
  */
-function env() {
+function env()
+{
 	return app()->parameters['lity']['env'];
+	
 } // env()
 
 /**
@@ -52,8 +59,10 @@ function env() {
  * Get router instance
  *
  */
-function router() {
+function router()
+{
 	return app()->router();
+	
 } // router()
 
 /**
@@ -68,11 +77,15 @@ function router() {
  * @param bool   $warn_by_email set to true to be warn by email
  *
  */
-function logdata($data, $warn_by_email = false) {
+function logdata($data, $warn_by_email = false)
+{
 	if (!isset(app()->config['logger']))
 		return;
+		
 	require_once ABSPATH.'lity/core/Logger.php';
+	
 	return Lity_Logger::get_instance()->output($data, $warn_by_email);
+	
 } // logdata()
 
 /**
@@ -87,8 +100,8 @@ function logdata($data, $warn_by_email = false) {
  * @return database object
  *
  */
-function db($name = 'default') {
-
+function db($name = 'default')
+{
 	if (!isset(app()->config['db'][$name]))
 		return null;
 
@@ -123,8 +136,8 @@ function db($name = 'default') {
  * @return object $model      a new model
  *
  */
-function model($model_name) {
-
+function model($model_name)
+{
 	// Load model from Application
 	if (file_exists(ABSPATH . 'app/models/'.ucfirst($model_name).'.php')) {
 		require_once ABSPATH . 'app/models/'.ucfirst($model_name).'.php';
@@ -152,9 +165,11 @@ function model($model_name) {
  * Get session instance
  *
  */
-function session() {
-	require_once(ABSPATH.'lity/session/Session.php');
+function session()
+{
+	require_once ABSPATH.'lity/session/Session.php';
 	return Lity_Session::get_instance();
+	
 } // session()
 
 /**
@@ -169,21 +184,21 @@ function session() {
  * @return object $helper
  *
  */
-function helper($helper_name) {
-
+function helper($helper_name)
+{
 	// Helper is already loaded, return it!
 	if (isset(app()->parameters['lity']['helpers'][$helper_name]))
 		return app()->parameters['lity']['helpers'][$helper_name];
 
 	// Load helper from Application
-	if (file_exists(ABSPATH . 'app/helpers/' . ucfirst($helper_name) . '.php')) {
-		require_once ABSPATH . 'app/helpers/' . ucfirst($helper_name) . '.php';
-		$helper = 'Helper_' . ucfirst($helper_name);
+	if (file_exists(ABSPATH.'app/helpers/'.ucfirst($helper_name).'.php')) {
+		require_once ABSPATH.'app/helpers/'.ucfirst($helper_name).'.php';
+		$helper = 'Helper_'.ucfirst($helper_name);
 	}
 	// Fallback to framework helpers
-	else if (file_exists(ABSPATH.'lity/helpers/' . ucfirst($helper_name) . '.php')) {
-		require_once ABSPATH.'lity/helpers/' . ucfirst($helper_name) . '.php';
-		$helper = 'Lity_Helper_' . ucfirst($helper_name);
+	else if (file_exists(ABSPATH.'lity/helpers/'.ucfirst($helper_name).'.php')) {
+		require_once ABSPATH.'lity/helpers/'.ucfirst($helper_name).'.php';
+		$helper = 'Lity_Helper_'.ucfirst($helper_name);
 	}
 
 	// Store helper's instance into Application's parameters
@@ -205,8 +220,8 @@ function helper($helper_name) {
  * @return object $plugin
  *
  */
-function plugin($plugin_name) {
-
+function plugin($plugin_name)
+{
 	// Load from Application
 	if (file_exists(ABSPATH.'app/plugins/'.ucfirst($plugin_name).'.php')) {
 		require_once ABSPATH.'app/plugins/'.ucfirst($plugin_name).'.php';
@@ -234,8 +249,8 @@ function plugin($plugin_name) {
  * @return object $service
  *
  */
-function service($service_name) {
-
+function service($service_name)
+{
 	// Load from Application
 	if (file_exists(ABSPATH.'app/services/'.ucfirst($service_name).'.php')) {
 		require_once ABSPATH.'app/services/'.ucfirst($service_name).'.php';
@@ -264,8 +279,8 @@ function service($service_name) {
  * @return string              error's value
  *
  */
-function error($error_name, $error_value = null) {
-
+function error($error_name, $error_value = null)
+{
 	// Set an error
 	if ($error_value != null) {
 		app()->parameters['lity']['errors'][$error_name] = $error_value;
@@ -283,26 +298,33 @@ function error($error_name, $error_value = null) {
  * Get all errors
  *
  */
-function errors() {
+function errors()
+{
 	return (isset(app()->parameters['lity']['errors']) ? app()->parameters['lity']['errors'] : array());
+	
 } // errors()
 
 /**
  * Get number of error(s)
  *
  */
-function errors_count() {
+function errors_count()
+{
 	return (isset(app()->parameters['lity']['errors']) ? count(app()->parameters['lity']['errors']) : 0);
+	
 } // errors_count()
 
 /**
  * Has application failed depending on error(s)
  *
  */
-function has_failed() {
+function has_failed()
+{
 	if (errors_count() > 0)
 		return true;
+		
 	return false;
+	
 } // has_failed()
 
 /**
@@ -318,12 +340,15 @@ function has_failed() {
  * @return string       current language
  *
  */
-function lang($lang = null) {
+function lang($lang = null)
+{
 	if ($lang != null) {
 		app()->parameters['lity']['lang'] = $lang;
 		setlocale(LC_ALL, $lang);
 	}
+	
 	return isset(app()->parameters['lity']['lang']) ? app()->parameters['lity']['lang'] : 'en_US';
+	
 } // lang()
 
 /**
@@ -332,11 +357,10 @@ function lang($lang = null) {
  * @param  string $language_file file to load
  * @param  string $str           string to translate
  * @param  array  $place_holders replacements
- * @return string                string translate or untranslate
- *
+ * @return string string translated or untranslated
  */
-function __($language_file, $str, $place_holders = array()) {
-
+function __($language_file, $str, $place_holders = array())
+{
 	if (!isset(app()->parameters['lity']['languages'][$language_file])) {
 		if ($keys = @include_once(ABSPATH.'app/languages/'.lang().'/'.ucfirst($language_file).".php"))
 			app()->parameters['lity']['languages'][$language_file] = $keys;
@@ -369,17 +393,25 @@ function __($language_file, $str, $place_holders = array()) {
  * @param  string $language_file file to load
  * @param  string $str           string to translate
  * @param  array  $place_holders replacements
- *
  */
-function _e($language_file, $str, $place_holders = array()) {
+function _e($language_file, $str, $place_holders = array())
+{
 	echo __($language_file, $str, $place_holders);
+	
 } // _e()
 
 /**
+ * Return string depends on count
  *
+ * @param string $singular Singular string
+ * @param string $plurial  Plurial string 
+ * @param int    $cnt      Count
+ * @return string Return $singular if $cnt <= 1 and $plurial if $cnt > 1
  */
-function _n($singular, $plural, $cnt) {
+function _n($singular, $plural, $cnt)
+{
 	return ($cnt > 1 ? $plural : $singular);
+	
 } // _n()
 
 /**
@@ -392,10 +424,11 @@ function _n($singular, $plural, $cnt) {
  *
  * @param string|bool $layout_name layout's name
  *                                 set to false to not render layout
- *
  */
-function use_layout($layout_name) {
+function use_layout($layout_name)
+{
 	app()->parameters['lity']['layout'] = $layout_name;
+	
 } // use_layout()
 
 /**
@@ -403,20 +436,22 @@ function use_layout($layout_name) {
  * Default is text/html
  *
  * @param string $type content type
- *
  */
-function use_layout_type($type) {
+function use_layout_type($type)
+{
 	app()->parameters['lity']['content_type'] = $type;
+	
 } // use_layout_type()
 
 /**
  * Change current view
  *
  * @param string $view_name
- *
  */
-function use_view($view_name) {
+function use_view($view_name)
+{
 	app()->parameters['lity']['view'] = $view_name;
+	
 } // use_view()
 
 /**
@@ -424,11 +459,10 @@ function use_view($view_name) {
  *
  * @param  string $partial_name partial's name
  * @param  array  $values       values to replace into partial
- * @return string               HTML
- *
+ * @return string HTML
  */
-function render_partial($partial_name, $values = array()) {
-
+function render_partial($partial_name, $values = array())
+{
 	$partial_name = explode('/', $partial_name);
 	$partial_view = '_'.array_pop($partial_name);
 	$partial_name = implode('/', $partial_name).'/'.$partial_view;
@@ -446,18 +480,22 @@ function render_partial($partial_name, $values = array()) {
  * Add a css file to layout
  *
  */
-function add_css() {
+function add_css()
+{
 	foreach (func_get_args() as $cssName)
 		app()->view()->add_css($cssName);
+		
 } // add_css()
 
 /**
  * Add a js file to layout
  *
  */
-function add_js() {
+function add_js()
+{
 	foreach (func_get_args() as $jsName)
 		app()->view()->add_js($jsName);
+		
 } // add_js()
 
 /**
@@ -482,10 +520,9 @@ function add_js() {
  *
  * @param string $name config's key name
  * @return Cache
- *
  */
-function cache($name = 'default') {
-
+function cache($name = 'default')
+{
 	if (!isset(app()->config['cache'][$name]))
 		return null;
 
@@ -529,8 +566,8 @@ function cache($name = 'default') {
  * HTTP redirection
  *
  */
-function redirect_to($destination = null) {
-
+function redirect_to($destination = null)
+{
 	if ($destination === null)
 		$destination = app()->config['urlbase'];
 	else if (substr($destination, 0, 4) != 'http')
