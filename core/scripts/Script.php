@@ -8,6 +8,6 @@
  
 abstract class Lity_Core_Script
 {
-    abstract public function run();
+    abstract public function run($argv);
     
 } // Lity_Core_Script

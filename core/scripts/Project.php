@@ -2,15 +2,11 @@
 
 /**
  * Initialize project
- * 
- * Script to initialize project
  *
  * @author Wibeset <support@wibeset.com>
  */
  
-require_once ABSPATH.'lity/core/scripts/Script.php';
- 
-class Lity_Core_Script_Project extends Lity_Core_Script
+class Lity_Core_Script_Project
 {
     /**
      * @var $_directories
