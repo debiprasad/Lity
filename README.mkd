@@ -4,4 +4,12 @@ Lity is a PHP5 Model-View-Controller framework. For more informations, see <a hr
 
 ## Installation
 
-Coming soon...
+* $> mkdir myproject
+* $> cd myproject
+* $> mkdir lity
+* Download and intall Lity in directory lity/
+* $> php lity/Lity.php init
+* $> chmod 777 logs cache
+* Be sure .htaccess 'RewriteBase' and index.php are ok
+* Open 'app/config/Development.php' and setup Urls
+* And you're done! ;)
