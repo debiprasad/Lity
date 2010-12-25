@@ -364,14 +364,10 @@ function __($language_file, $str, $place_holders = array())
 	if (!isset(app()->parameters['lity']['languages'][$language_file])) {
 		if ($keys = @include_once(ABSPATH.'app/languages/'.lang().'/'.ucfirst($language_file).".php"))
 			app()->parameters['lity']['languages'][$language_file] = $keys;
-		else
-			return $str;
 	}
 
-	if (!isset(app()->parameters['lity']['languages'][$language_file][$str]))
-		return $str;
-
-	$str = app()->parameters['lity']['languages'][$language_file][$str];
+	if (isset(app()->parameters['lity']['languages'][$language_file][$str]))
+		$str = app()->parameters['lity']['languages'][$language_file][$str];
 
 	if (strstr($str, "{{")) {
 		if (preg_match_all('/{{([a-zA-Z0-9_\/]*)}}/', $str, $matchs)) {
